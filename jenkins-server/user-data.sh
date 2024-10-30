@@ -1,43 +1,29 @@
 #!/bin/bash
-# Java installation for jenkins
 
-sudo yum update –y
-sudo wget -O /etc/yum.repos.d/jenkins.repo \
-    https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-sudo yum upgrade
-
-#Install java
-sudo dnf install java-17-amazon-corretto -y
+# 更新系统软件包
+sudo yum update -y
+# 安装 Java（Jenkins 依赖 Java）
+sudo amazon-linux-extras install java-openjdk11 -y
+# 添加 Jenkins 的官方存储库并导入 GPG 密钥
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+# 安装 Jenkins
 sudo yum install jenkins -y
-sudo systemctl enable Jenkins
+# 启动并启用 Jenkins 服务
 sudo systemctl start jenkins
+sudo systemctl enable jenkins
+# 检查 Jenkins 状态（可选）
+sudo systemctl status jenkins
+# 输出初始管理员密码位置
+echo "Jenkins 安装完成！初始管理员密码位于 /var/lib/jenkins/secrets/initialAdminPassword 文件中。"
 
-
-# Terraform Installation
-
-# sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-# wget -O- https://apt.releases.hashicorp.com/gpg | \
-# gpg --dearmor | \
-# sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-# gpg --no-default-keyring \
-# --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
-# --fingerprint
-# echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-# https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-# sudo tee /etc/apt/sources.list.d/hashicorp.list
-# sudo apt update
-# sudo apt-get install terraform -y
-
-# Installing kubernetes
-
-# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-# curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-# echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-# sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl 
-
-# Install AWS CLI 
-# sudo apt install unzip 
-# curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-# unzip awscliv2.zip
-# sudo ./aws/install
+# 下载 Terraform 的最新版本（在 HashiCorp 官方页面查看最新版本号替换）
+TERRAFORM_VERSION="1.6.0"
+wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+# 解压 Terraform 并移动到系统路径
+unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+# 检查 Terraform 安装版本
+terraform -version
+# 清理下载的文件
+echo "Terraform 安装完成！"

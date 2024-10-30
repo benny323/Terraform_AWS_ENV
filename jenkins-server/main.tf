@@ -1,6 +1,7 @@
 
 #Get availability zone
 data "aws_availability_zones" "azs" {}
+
 #VPC Modules:https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
@@ -77,7 +78,7 @@ module "ec2_instance" {
   name = "jenkins_server"
 
   instance_type               = var.instance_type
-  ami                         = "ami-04b6019d38ea93034"
+  ami                         = "ami-047126e50991d067b"
   key_name                    = "cloud-labs-nv"
   monitoring                  = true
   vpc_security_group_ids      = [module.security-group.security_group_id]
