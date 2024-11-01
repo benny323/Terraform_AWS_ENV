@@ -15,3 +15,8 @@ variable "instance_type" {
   description = "Instance Type"
   type        = string
 }
+
+variable "ec2_image" {
+  description = "image ID"
+  type        = string
+}

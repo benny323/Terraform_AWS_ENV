@@ -78,14 +78,14 @@ module "ec2_instance" {
   name = "jenkins_server"
 
   instance_type               = var.instance_type
-  ami                         = "ami-047126e50991d067b"
+  ami                         = var.ec2_image
   key_name                    = "cloud-labs-nv"
   monitoring                  = true
   vpc_security_group_ids      = [module.security-group.security_group_id]
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   availability_zone           = data.aws_availability_zones.azs.names[0]
-  user_data                   = file("user-data.sh")
+  #user_data                   = file("user-data.sh")
 
 
   tags = {
